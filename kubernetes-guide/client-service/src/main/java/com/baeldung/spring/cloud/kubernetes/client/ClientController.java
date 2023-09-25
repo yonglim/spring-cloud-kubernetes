@@ -1,5 +1,7 @@
 package com.baeldung.spring.cloud.kubernetes.client;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -25,14 +27,19 @@ public class ClientController {
     @Autowired
     private TravelAgencyService travelAgencyService;
 
+    private static final Log log = LogFactory.getLog(ClientController.class);
+
     @RequestMapping("/deals")
     public String getDeals() {
-        return travelAgencyService.getDeals();
+        log.info( " getting deals 77 ");
+        System.out.println( " getting deals ** 77 ");
+        return "getting deals from service " + travelAgencyService.getDeals();
     }
 
     @GetMapping
     public String load() {
-
+        log.info( " loading deals 77 ");
+        System.out.println( " loading deals ** 77 ");
         RestTemplate restTemplate = new RestTemplate();
         String resourceUrl = "http://travel-agency-service:8080";
         ResponseEntity<String> response = restTemplate.getForEntity(resourceUrl, String.class);
@@ -40,6 +47,7 @@ public class ClientController {
         String serviceList = "";
         if (discoveryClient != null) {
             List<String> services = this.discoveryClient.getServices();
+            log.info( " services " + services);
 
             for (String service : services) {
 
@@ -49,6 +57,7 @@ public class ClientController {
             }
         }
 
+        log.info( " serviceList " + serviceList);
         return String.format(config.getMessage(), response.getBody(), serviceList);
     }
 }

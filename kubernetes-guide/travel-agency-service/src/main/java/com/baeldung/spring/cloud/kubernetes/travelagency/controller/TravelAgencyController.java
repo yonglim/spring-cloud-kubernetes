@@ -18,6 +18,7 @@ public class TravelAgencyController {
     @Autowired
     private TravelDealRepository travelDealRepository;
 
+    private static Integer counter = 0 ;
     private static final Log log = LogFactory.getLog(TravelAgencyController.class);
 
     @RequestMapping(method = GET, path = "/deals")
@@ -25,6 +26,8 @@ public class TravelAgencyController {
         log.info("Client is requesting new deals!");
 
         List<TravelDeal> travelDealList = travelDealRepository.findAll();
+        log.info("travelDealList : " + travelDealList);
+
         if (!travelDealList.isEmpty()) {
             int randomDeal = new Random().nextInt(travelDealList.size());
             return travelDealList.get(randomDeal)
@@ -48,7 +51,7 @@ public class TravelAgencyController {
                 .getHostAddress())
             .append("<br/>");
         stringBuilder.append("Type: ")
-            .append("Travel Agency")
+            .append("Travel Agency " + ++counter)
             .append("<br/>");
         return stringBuilder.toString();
     }

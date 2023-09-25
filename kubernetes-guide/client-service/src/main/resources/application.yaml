@@ -8,7 +8,8 @@ spring:
         enabled: true
         all-namespaces: false
         primary-port-name: "default-http"
-        discovery-server-url: "http://myapp-discoveryserver"
+#        discovery-server-url: "http://myapp-discoveryserver"
+        discovery-server-url: "http://spring-cloud-kubernetes-discoveryserver"
         include-not-ready-addresses: true
 server.port: 8080
 management:
