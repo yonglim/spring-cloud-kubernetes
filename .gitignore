@@ -1,0 +1,13 @@
+
+# ignore target directories
+target/
+
+#ignore intellij .idea directory and iml file
+.idea/
+*.iml
+
+.DS_Store
+
+
+
+
