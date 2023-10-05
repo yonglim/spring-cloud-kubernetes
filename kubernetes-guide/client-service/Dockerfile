@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:17-jdk-alpine
 VOLUME /tmp
 COPY target/client-service-1.0.0-SNAPSHOT.jar app.jar
 ENV JAVA_OPTS=""

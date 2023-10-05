@@ -8,6 +8,6 @@ target/
 
 .DS_Store
 
-
-
+*.ori
+*.todelete
 

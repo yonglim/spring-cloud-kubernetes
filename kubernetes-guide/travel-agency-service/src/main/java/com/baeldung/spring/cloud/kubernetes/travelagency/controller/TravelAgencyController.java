@@ -41,6 +41,18 @@ public class TravelAgencyController {
     @ResponseBody
     public String get() throws UnknownHostException {
 
+        return getServerInfo();
+    }
+
+    @RequestMapping(method = GET, path = "/delay")
+    @ResponseBody
+    public String getWihDelay(@RequestParam Integer delaySeconds) throws UnknownHostException, InterruptedException {
+        System.out.println( " getWihDelay seconds : " + delaySeconds);
+        Thread.sleep(1000*delaySeconds);
+        return getServerInfo();
+    }
+
+    private String getServerInfo() throws UnknownHostException {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Host: ")
             .append(InetAddress.getLocalHost()

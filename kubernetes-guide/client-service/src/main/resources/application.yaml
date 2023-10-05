@@ -13,6 +13,11 @@ spring:
         include-not-ready-addresses: true
 server.port: 8080
 management:
+  # https://www.linkedin.com/pulse/spring-cloud-circuit-breaker-resilience4j-jonathan-manera
+  # /actuator/health
+  # http://127.0.0.1:51533/actuator/health
+  endpoint.health.show-details: always
+  health.circuitbreakers.enabled: true
   endpoint:
     restart:
       enabled: true
@@ -24,3 +29,15 @@ ribbon:
   http:
     client:
       enabled: true
+resilience4j:
+  circuitbreaker:
+    instances:
+      client-service:
+        failureRateThreshold: 50
+        waitDurationInOpenState: 1s
+        minimumNumberOfCalls: 2
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 2
+        slidingWindowType: COUNT_BASED
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        registerHealthIndicator: true

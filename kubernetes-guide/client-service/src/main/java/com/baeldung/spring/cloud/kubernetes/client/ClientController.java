@@ -4,15 +4,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 @RestController
@@ -25,15 +27,31 @@ public class ClientController {
     private ClientConfig config;
 
     @Autowired
+    private CircuitBreakerFactory circuitBreakerFactory;
+
+    @Autowired
     private TravelAgencyService travelAgencyService;
 
     private static final Log log = LogFactory.getLog(ClientController.class);
 
     @RequestMapping("/deals")
     public String getDeals() {
-        log.info( " getting deals 77 ");
-        System.out.println( " getting deals ** 77 ");
+        log.info( " getting deals 88 ");
+        System.out.println( " getting deals ** 88 ");
         return "getting deals from service " + travelAgencyService.getDeals();
+    }
+
+    @RequestMapping("/circuit")
+    public String getDelayWithCircuitBreaker(@RequestParam Integer delaySeconds) {
+        log.info( " circuit breaker 88 .. delaySeconds : " + delaySeconds);
+        System.out.println( " circuit breaker ** 88 .. delaySeconds : " + delaySeconds);
+
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("client-service");
+        return circuitBreaker.run(() -> "getting circuit from service " + travelAgencyService.getDelay(delaySeconds), throwable -> getFallbackMessage());
+    }
+
+    private String getFallbackMessage() {
+        return "{ \"message\": \"fallback message\" }";
     }
 
     @GetMapping
